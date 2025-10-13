@@ -4,6 +4,7 @@ import { stringTemplateMixing } from "./mixins/stringTemplate.js";
 import { classNameMixin } from "./mixins/className.js";
 import { stateMixin } from "./mixins/state.js";
 import { childrenMixin } from "./mixins/children.js";
+import { initializeCollectionMixin } from "./mixins/initializeCollection.js";
 
 export const View = MnView.extend({
 
@@ -20,7 +21,7 @@ export const View = MnView.extend({
 	...classNameMixin,
 	...stateMixin,
 	...childrenMixin,
-	
+	...initializeCollectionMixin,
 
 	render: function render() {
 		var template = this.getTemplate();

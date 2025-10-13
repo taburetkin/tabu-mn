@@ -1,9 +1,10 @@
 import { optionsMixin } from "./mixins/options.js";
 import { CollectionView as MnCollectionView } from 'backbone.marionette';
-import { Collection } from 'backbone';
+
 import { stringTemplateMixing } from "./mixins/stringTemplate.js";
 import { classNameMixin } from "./mixins/className.js";
 import { stateMixin } from "./mixins/state.js";
+import { initializeCollectionMixin } from "./mixins/initializeCollection.js";
 
 export const CollectionView = MnCollectionView.extend({
 	constructor: function TabuView(options) {
@@ -17,14 +18,7 @@ export const CollectionView = MnCollectionView.extend({
 	...stringTemplateMixing,
 	...classNameMixin,
 	...stateMixin,
+	...initializeCollectionMixin,
 
-	initializeCollection(models) {
-		if (this.collection) {
-			this.collection.reset(models);
-		} else {
-			const CollectionClass = this.getOption('Collection', true) || Collection;
-			this.collection = new CollectionClass(models);
-		}
-	}
 
 });
