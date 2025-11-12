@@ -189,8 +189,8 @@ export const childrenMixin = {
 
 		const viewName = keyAs.name && _viewName 
 								? _viewName
-								: personalOptions?.name;
-
+								: personalOptions?.name || ChildView.prototype.name;
+		
 		const hasNamed = viewName || keyAs.selector;
 
 		if (hasNamed) {
@@ -198,6 +198,7 @@ export const childrenMixin = {
 			let named2 = viewName ? this.getOption(viewName + 'Options', true) : undefined;
 			let named3 = _viewName && keyAs.selector ? { parentContainerSelector: _viewName } : undefined
 			namedOptions = Object.assign({}, named1, named2, named3);
+			//console.error('viewName', viewName, named2, hasNamed, keyAs.selector, this );
 		}
 
 		if (!ChildView) {
