@@ -106,15 +106,7 @@ export const childrenMixin = {
 			}
 		}
 		
-		// if (typeof key === 'string') {
-		// 	let considerChildViewKeyAs = buildOptions.considerChildViewKeyAs;
-		// 	if (considerChildViewKeyAs.name) {
-		// 		viewData.name = key;
-		// 	}
-		// 	if (considerChildViewKeyAs.selector) {
-		// 		viewData.selector = key;
-		// 	}
-		// }
+
 
 		let parentContainer;
 		if (viewData.selector) {
@@ -221,6 +213,13 @@ export const childrenMixin = {
 		this.triggerMethod('setup:child:view', ctx.childView, ctx.name);
 		if (ctx.childView.getOption('parentShouldTriggerSetup', true)) {
 			ctx.childView.triggerMethod('setup', this);
+		}
+		const parentProperty = ctx.childView.getOption('setAsParentProperty', true);
+		if (typeof parentProperty === 'string') {
+			if (parentProperty in this) {
+				console.warn(`parent property "${parentProperty}" was replaced by childView`, ctx.childView.cid);
+			}
+			this[parentProperty] = ctx.childView;
 		}
 	},
 
