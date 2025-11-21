@@ -3,6 +3,46 @@ import { invokeValue } from "../utils/invokeValue";
 
 export const optionsMixin = {
 
+	_setOptions: function _setOptions(options, classOptions) {
+
+		if (!this._optionsInitialized) {
+			this._optionsInitialized = true;
+			this.options = Object.assign({}, invokeValue(this.options, this, this), options);
+				//_.extend({}, _.result(this, 'options'), options);
+		}
+
+		if (!this._optionsKeysInitialized) {
+			this._optionsKeysInitialized = true;
+			const keys = this.getOption('mergeOptionsKeys', true);
+			if (keys != null) {
+				const isArray = Array.isArray(keys);
+				let arrayInvoke;
+				if (Array.isArray(keys)) {
+					arrayInvoke = !!this.getOption('mergeOptionsKeysInvoke', true);
+					if (!arrayInvoke) {
+						this.mergeOptions(options, keys);
+						return;
+					}
+					isArray = true;
+				} 
+	
+				if (typeof keys === 'object') {
+					const hash = keys;
+					const hashKeys = isArray ? keys : Object.keys(keys);
+					for(let key of hashKeys) {
+						let invoke = isArray ? arrayInvoke : !!hash[key];
+						this[key] = this.getOption(key, invoke);
+					}
+				}
+			}
+
+		}
+
+		if (Array.isArray(classOptions))
+			this.mergeOptions(options, classOptions);
+
+	},
+
 	getOption(key, options) {
 		if (arguments.length === 1 && tabuMnConfig.throwOnMissingGetOptionOptions) {
 			throw new Error('calling getOption(key) without options argument is restricted');

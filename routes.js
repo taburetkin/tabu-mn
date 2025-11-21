@@ -22,7 +22,17 @@ export const routes = {
 		});
 		return hash;
 	},
-
+	_extractSearch(text) {
+		if (text == null || text === '') { return {}; }
+		const search = text.split('&').reduce((memo, pair) => {
+			const chunks = pair.split('=');
+			const key = chunks.shift();
+			const value = chunks.join('=');
+			memo[key] = value;
+			return memo;
+		}, {});
+		return search;
+	},
 	register(route, callback) {
 		if (this.registered[route]) {
 			throw new Error(route + ' already registered');
@@ -61,9 +71,10 @@ export const routes = {
 
 	async execute(fragment, regexRoute, route, callback) {
 		const argsArr = this._extractArgsArray(regexRoute, fragment);
+		const search = this._extractSearch(argsArr.pop());
 		const args = this._extractArgs(route, argsArr);
 
-		Object.assign(request, { argsArr, args, route, fragment, regexRoute, callback });
+		Object.assign(request, { argsArr, args, route, fragment, regexRoute, callback, search });
 
 		try {
 

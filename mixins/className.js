@@ -64,9 +64,9 @@ export const classNameMixin = {
 		}
 	},
 
-	_setAttributes(attributes) {
-		this.$el.attr(attributes);
-	}	
+	// _setAttributes(attributes) {
+	// 	this.$el.attr(attributes);
+	// }	
 }
 
 
