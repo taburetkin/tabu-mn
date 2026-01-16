@@ -17,13 +17,13 @@ export const optionsMixin = {
 			if (keys != null) {
 				const isArray = Array.isArray(keys);
 				let arrayInvoke;
-				if (Array.isArray(keys)) {
+				if (isArray) {
 					arrayInvoke = !!this.getOption('mergeOptionsKeysInvoke', true);
 					if (!arrayInvoke) {
 						this.mergeOptions(options, keys);
 						return;
 					}
-					isArray = true;
+					//isArray = true;
 				} 
 	
 				if (typeof keys === 'object') {
