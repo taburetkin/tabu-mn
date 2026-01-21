@@ -197,13 +197,13 @@ export const childrenMixin = {
 			throw new Error('unable to build child view: constructor missing');
 		}
 
-		const options = Object.assign({}, commonChildViewOptions, personalOptions, namedOptions);
+		const options = Object.assign({ parentView: this }, commonChildViewOptions, personalOptions, namedOptions);
 
 		return new ChildView(options);
 	},
 
 	_setupChildView(ctx) {
-		
+		ctx.childView.parentView = this;
 		mnRegionSetupChildView.call(this, ctx.childView);
 		if (ctx.parentContainer?.replaceElement) {
 			this.listenToOnce(ctx.childView, 'before:destroy', () => {
@@ -211,6 +211,10 @@ export const childrenMixin = {
 			});
 		}
 		this.triggerMethod('setup:child:view', ctx.childView, ctx.name);
+		const name = ctx.childView.getOption('name', true);
+		if (name) {
+			this.triggerMethod(name + ':setup', ctx.childView);
+		}
 		if (ctx.childView.getOption('parentShouldTriggerSetup', true)) {
 			ctx.childView.triggerMethod('setup', this);
 		}

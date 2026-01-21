@@ -9,6 +9,9 @@ import { initializeCollectionMixin } from "./mixins/initializeCollection.js";
 export const View = MnView.extend({
 
 	constructor: function TabuView(options) {
+		if (options?.parentView) {
+			this.parentView = options?.parentView;
+		}
 		MnView.apply(this, arguments);
 		this._callOptionsInitialize();
 		this._initState();
