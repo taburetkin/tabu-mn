@@ -82,6 +82,7 @@ export const childrenMixin = {
 	_renderChild(potentialChild, index, key, buildOptions) {
 		
 		if (this.DEBUGRENDERCHILD) {
+			console.error('DEBUGRENDERCHILD')
 			console.log(this.el, ' -> ', potentialChild, key);
 		}
 		const childView = this._buildChildView(potentialChild, buildOptions, key);
